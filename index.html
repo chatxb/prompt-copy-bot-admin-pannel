@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt House - Premium Admin Suite</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom Scrollbars */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Neon Glow Borders */
+    .glow-border {
+      border: 1px solid rgba(10, 132, 255, 0.2);
+      box-shadow: 0 0 15px rgba(10, 132, 255, 0.05);
+    }
+    .glow-card:hover {
+      border-color: rgba(10, 132, 255, 0.4);
+      box-shadow: 0 0 20px rgba(10, 132, 255, 0.15);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body class="bg-[#0b0f17] text-white font-sans min-h-screen flex transition-all duration-300">
+
+  <!-- ==================================================== -->
+  <!-- 1. Secured Admin Login Gate -->
+  <!-- ==================================================== -->
+  <div id="admin-auth" class="w-full min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-[#131b2e]/90 border border-gray-800 p-8 rounded-3xl shadow-2xl glow-border">
+      <div class="flex justify-center mb-4">
+        <div class="p-3 bg-[#0a84ff]/10 text-[#0a84ff] rounded-full">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+        </div>
+      </div>
+      <h2 class="text-2xl font-bold mb-1 text-center tracking-tight">Prompt House</h2>
+      <p class="text-xs text-gray-400 mb-6 text-center">Secure Admin Suite Access</p>
+      <input id="admin-pass-input" type="password" placeholder="Enter Access Password..." class="w-full p-3.5 mb-4 bg-[#0b0f17] border border-gray-800 rounded-2xl focus:border-[#0a84ff] outline-none text-sm text-center font-semibold">
+      <button id="admin-login-btn" class="w-full py-3.5 bg-[#0a84ff] hover:bg-blue-600 rounded-2xl font-semibold text-sm transition-all shadow-lg shadow-blue-500/10">Access Control</button>
+    </div>
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- 2. Main Admin Dashboard Layout -->
+  <!-- ==================================================== -->
+  <div id="admin-layout" class="hidden w-full flex">
+    
+    <!-- Premium Sidebar Navigation (Glassmorphic look) -->
+    <aside class="w-64 bg-[#121824]/90 backdrop-blur-md border-r border-gray-800/60 p-5 flex flex-col justify-between h-screen sticky top-0">
+      <div>
+        <div class="flex items-center gap-3 mb-8">
+          <span class="w-2.5 h-3 rounded-full bg-green-500 animate-pulse"></span>
+          <h2 class="text-lg font-bold tracking-wide">Prompt House <span class="text-[10px] text-blue-500 font-extrabold tracking-widest uppercase block">Console</span></h2>
+        </div>
+        
+        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-3">Navigation</p>
+        <nav class="space-y-1.5 mb-8">
+          <button onclick="switchAdminTab('dashboard')" id="adm-nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all bg-[#1f293d] text-blue-500">
+            📊 Dashboard
+          </button>
+          <button onclick="switchAdminTab('categories')" id="adm-nav-categories" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all text-gray-400 hover:bg-[#12161f]">
+            📁 Categories
+          </button>
+          <button onclick="switchAdminTab('prompts')" id="adm-nav-prompts" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all text-gray-400 hover:bg-[#12161f]">
+            🖼️ Prompts
+          </button>
+        </nav>
+
+        <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-3">System Config</p>
+        <nav class="space-y-1.5">
+          <button onclick="switchAdminTab('ads')" id="adm-nav-ads" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all text-gray-400 hover:bg-[#12161f]">
+            📢 Ads Manager
+          </button>
+          <button onclick="switchAdminTab('settings')" id="adm-nav-settings" class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all text-gray-400 hover:bg-[#12161f]">
+            ⚙️ Global Settings
+          </button>
+        </nav>
+      </div>
+
+      <!-- Logout Button -->
+      <button onclick="logoutAdmin()" class="w-full py-3.5 bg-red-600/10 hover:bg-red-600/20 text-red-500 rounded-2xl font-bold text-sm transition-all border border-red-500/10">
+        🚪 Logout Console
+      </button>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="flex-1 p-8 overflow-y-auto max-w-5xl">
+      
+      <!-- Panel 1: Dashboard Overview -->
+      <section id="panel-dashboard" class="space-y-8">
+        <div>
+          <h2 class="text-3xl font-extrabold tracking-tight">Console Dashboard</h2>
+          <p class="text-xs text-gray-400 mt-1">Real-time statistics of your Prompt House application</p>
+        </div>
+
+        <!-- Dynamic Summary Cards -->
+        <div class="grid grid-cols-3 gap-6">
+          <div class="p-6 bg-[#131b2e]/40 border border-gray-800/60 rounded-3xl transition-all duration-300 glow-border glow-card">
+            <p class="text-xs text-gray-400 uppercase font-semibold mb-2">Total Categories</p>
+            <p id="stat-categories" class="text-4xl font-black">0</p>
+          </div>
+          <div class="p-6 bg-[#131b2e]/40 border border-gray-800/60 rounded-3xl transition-all duration-300 glow-border glow-card">
+            <p class="text-xs text-gray-400 uppercase font-semibold mb-2">Total Prompts</p>
+            <p id="stat-prompts" class="text-4xl font-black">0</p>
+          </div>
+          <div class="p-6 bg-[#131b2e]/40 border border-gray-800/60 rounded-3xl transition-all duration-300 glow-border glow-card">
+            <p class="text-xs text-gray-400 uppercase font-semibold mb-2">Monetization Link</p>
+            <p id="stat-ads" class="text-lg font-bold text-green-500">Active</p>
+          </div>
+        </div>
+
+        <!-- Quick Status & Operations -->
+        <div class="grid grid-cols-2 gap-6">
+          <div class="p-6 bg-[#131b2e]/30 border border-gray-800/50 rounded-3xl space-y-4">
+            <h3 class="text-md font-bold text-blue-500">App Status Summary</h3>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between border-b border-gray-800/40 pb-2">
+                <span class="text-gray-400">Maintenance Mode</span>
+                <span id="dash-maintenance-status" class="font-bold text-red-500">Disabled</span>
+              </div>
+              <div class="flex justify-between border-b border-gray-800/40 pb-2">
+                <span class="text-gray-400">Announcement Banner</span>
+                <span id="dash-banner-status" class="font-bold text-yellow-500">Inactive</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Firebase DB Link</span>
+                <span class="font-bold text-green-500">Connected</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-6 bg-[#131b2e]/30 border border-gray-800/50 rounded-3xl flex flex-col justify-between">
+            <div>
+              <h3 class="text-md font-bold text-blue-500 mb-2">Quick Database Action</h3>
+              <p class="text-xs text-gray-400 leading-relaxed">Add new categories, post premium portraits or set dynamic Monetag/Adsgram tags in real-time from the left navigation panel.</p>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="switchAdminTab('prompts')" class="flex-1 py-2.5 bg-[#0a84ff]/10 hover:bg-[#0a84ff]/20 text-[#0a84ff] border border-[#0a84ff]/20 rounded-xl text-xs font-semibold transition-all">Post Prompt</button>
+              <button onclick="switchAdminTab('settings')" class="flex-1 py-2.5 bg-gray-800/30 hover:bg-gray-800/50 text-gray-300 border border-gray-800 rounded-xl text-xs font-semibold transition-all">App Settings</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel 2: Manage Categories -->
+      <section id="panel-categories" class="hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold">Manage Categories</h2>
+          <p class="text-xs text-gray-400">Add or remove prompt categorization filters</p>
+        </div>
+        <div class="flex gap-3">
+          <input id="new-cat-input" type="text" placeholder="Type category name... (e.g. Trending 🔥)" class="flex-1 p-3.5 bg-[#131b2e]/60 border border-gray-800 rounded-2xl outline-none focus:border-blue-500 text-sm">
+          <button id="add-cat-btn" class="px-6 py-3.5 bg-[#0a84ff] hover:bg-blue-600 font-semibold text-sm rounded-2xl transition-all shadow-lg shadow-blue-500/10">Add Category</button>
+        </div>
+
+        <div class="bg-[#131b2e]/30 border border-gray-800/60 rounded-3xl overflow-hidden shadow-xl">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-[#121824] border-b border-gray-800 text-gray-400 uppercase tracking-wider">
+                <th class="p-4 font-semibold">Category Name</th>
+                <th class="p-4 text-right font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-categories-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Panel 3: Manage Prompts (With Search Bar) -->
+      <section id="panel-prompts" class="hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold">Manage Prompts</h2>
+          <p class="text-xs text-gray-400">Post new Cloudflare portrait links and prompt writings</p>
+        </div>
+        <div class="p-6 bg-[#131b2e]/40 border border-gray-800/60 rounded-3xl space-y-4 shadow-xl">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">Cloudflare Image URL</label>
+              <input id="prompt-img-input" type="url" placeholder="https://cloudflare-link..." class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-2xl outline-none focus:border-blue-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">Select Category</label>
+              <select id="prompt-cat-select" class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-2xl outline-none focus:border-blue-500 text-sm text-gray-400"></select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-400 font-semibold mb-1.5">Prompt Text</label>
+            <textarea id="prompt-text-input" rows="3" placeholder="Paste your AI prompt writing here..." class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-2xl outline-none focus:border-blue-500 text-sm"></textarea>
+          </div>
+          <button id="add-prompt-btn" class="w-full py-3.5 bg-[#0a84ff] hover:bg-blue-600 font-semibold text-sm rounded-2xl transition-all shadow-lg shadow-blue-500/10">Post Prompt</button>
+        </div>
+
+        <div class="flex justify-between items-center mt-8">
+          <h3 class="text-lg font-bold">Prompt Gallery</h3>
+          <input id="prompt-search-input" type="text" placeholder="Search prompts..." class="p-2 px-4 bg-[#131b2e]/50 border border-gray-800 rounded-xl outline-none text-xs focus:border-blue-500 w-48">
+        </div>
+        <div id="admin-prompts-list" class="grid grid-cols-3 gap-4"></div>
+      </section>
+
+      <!-- Panel 4: Ads Manager (With Enable/Disable toggles) -->
+      <section id="panel-ads" class="hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold">Manage Advertisements</h2>
+          <p class="text-xs text-gray-400">Configure Adsgram.io and Monetag script IDs</p>
+        </div>
+        <div class="p-6 bg-[#131b2e]/40 border border-gray-800/60 rounded-3xl space-y-6 shadow-xl">
+          <div class="grid grid-cols-2 gap-6">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs text-gray-400 font-semibold mb-1.5">Adsgram.io Block ID</label>
+                <input id="adsgram-id-input" type="text" placeholder="Block ID..." class="w-full p-3 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs text-gray-400 font-semibold">Enable Adsgram Ads</span>
+                <div onclick="toggleAdState('adsgram')" id="adsgram-toggle-bg" class="w-11 h-6 flex items-center bg-[#0066cc] rounded-full p-1 cursor-pointer transition-colors duration-300">
+                  <div id="adsgram-toggle-circle" class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-5 transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs text-gray-400 font-semibold mb-1.5">Monetag Tag ID</label>
+                <input id="monetag-id-input" type="text" placeholder="Tag ID..." class="w-full p-3 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs text-gray-400 font-semibold">Enable Monetag Ads</span>
+                <div onclick="toggleAdState('monetag')" id="monetag-toggle-bg" class="w-11 h-6 flex items-center bg-[#0066cc] rounded-full p-1 cursor-pointer transition-colors duration-300">
+                  <div id="monetag-toggle-circle" class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-5 transition-transform duration-300" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <button id="save-ads-btn" class="w-full py-3.5 bg-[#0a84ff] hover:bg-blue-600 font-semibold text-sm rounded-2xl transition-all shadow-lg shadow-blue-500/10">Save Ads Config</button>
+        </div>
+      </section>
+
+      <!-- Panel 5: Global Settings (With System maintenance switches) -->
+      <section id="panel-settings" class="hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold">Global Application Settings</h2>
+          <p class="text-xs text-gray-400">Control application title, telegram links, and system switches</p>
+        </div>
+        <div class="p-6 bg-[#131b2e]/40 border border-gray-800/60 rounded-3xl space-y-6 shadow-xl">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">App Name</label>
+              <input id="set-appname" type="text" class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">Welcome Subtitle</label>
+              <input id="set-welcometext" type="text" class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">Telegram Channel Link</label>
+              <input id="set-telegram" type="url" class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">Contact Us Username Link</label>
+              <input id="set-contact" type="url" class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">How To Use Guide Link</label>
+              <input id="set-howtouse" type="url" class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-400 font-semibold mb-1.5">Privacy Policy URL Link</label>
+              <input id="set-privacy" type="url" class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+            </div>
+          </div>
+
+          <!-- PRO Feature Toggles -->
+          <div class="grid grid-cols-2 gap-6 p-4 bg-[#0d0f12]/50 border border-gray-800 rounded-2xl">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm font-semibold text-red-500">Maintenance Mode</p>
+                <p class="text-[10px] text-gray-500">Locks main app with warning screen</p>
+              </div>
+              <div onclick="toggleSystemState('maintenance')" id="maintenance-toggle-bg" class="w-11 h-6 flex items-center bg-gray-600 rounded-full p-1 cursor-pointer transition-colors duration-300">
+                <div id="maintenance-toggle-circle" class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-0 transition-transform duration-300" />
+              </div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm font-semibold text-yellow-500">Announcement Banner</p>
+                <p class="text-[10px] text-gray-500">Shows marquee/banner text inside app</p>
+              </div>
+              <div onclick="toggleSystemState('banner')" id="banner-toggle-bg" class="w-11 h-6 flex items-center bg-gray-600 rounded-full p-1 cursor-pointer transition-colors duration-300">
+                <div id="banner-toggle-circle" class="bg-white w-4 h-4 rounded-full shadow-md transform translate-x-0 transition-transform duration-300" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Conditional Banner Text Field -->
+          <div id="banner-text-box" class="hidden">
+            <label class="block text-xs text-gray-400 font-semibold mb-1.5">Announcement Banner Text</label>
+            <input id="set-bannertext" type="text" placeholder="e.g. Join our Telegram for premium prompts updates!..." class="w-full p-3.5 bg-[#0d0f12] border border-gray-800 rounded-xl outline-none focus:border-blue-500 text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs text-red-500 font-bold mb-1.5">Change Admin Console Password</label>
+            <input id="set-password" type="text" class="w-full p-3.5 bg-[#0d0f12] border border-red-900 rounded-xl outline-none focus:border-red-500 text-sm font-semibold">
+          </div>
+          <button id="save-settings-btn" class="w-full py-3.5 bg-[#0a84ff] hover:bg-blue-600 font-semibold text-sm rounded-2xl transition-all shadow-lg shadow-blue-500/10">Save All Configurations</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- 3. Firebase Database Scripts -->
+  <!-- ==================================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, getDoc, onSnapshot 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Firebase configurations
+    const firebaseConfig = {
+      apiKey: "AIzaSyBP9d5ekOd0zvO-D7Fq8aXmNoS2aqryvVA",
+      authDomain: "tg-bot-prompt-copy.firebaseapp.com",
+      projectId: "tg-bot-prompt-copy",
+      storageBucket: "tg-bot-prompt-copy.firebasestorage.app",
+      messagingSenderId: "623834211164",
+      appId: "1:623834211164:web:6dd0bc4875945f99839799",
+      measurementId: "G-G0VWDYS8JE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Console Local State
+    let currentAdminTab = 'dashboard';
+    let categories = [];
+    let prompts = [];
+    
+    // Default config values
+    let configSettings = {
+      adminPassword: 'admin123',
+      appName: 'Prompt House',
+      welcomeText: 'Welcome App',
+      telegramLink: '#',
+      contactLink: '#',
+      howToUseLink: '#',
+      privacyLink: '#',
+      adsgramBlockId: '',
+      monetagTagId: '',
+      adsgramEnabled: true,
+      monetagEnabled: true,
+      maintenanceMode: false,
+      bannerEnabled: false,
+      bannerText: ''
+    };
+
+    // Listen to changes real-time
+    function initDataSync() {
+      // Sync categories
+      onSnapshot(collection(db, "categories"), (snapshot) => {
+        categories = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderAdminCategories();
+        populateAdminCategoryDropdown();
+        updateDashboardStats();
+      });
+
+      // Sync prompts
+      onSnapshot(collection(db, "prompts"), (snapshot) => {
+        prompts = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderAdminPrompts();
+        updateDashboardStats();
+      });
+
+      // Sync settings
+      onSnapshot(doc(db, "config", "settings"), (snapshot) => {
+        if (snapshot.exists()) {
+          configSettings = { ...configSettings, ...snapshot.data() };
+          applySettings();
+        }
+      });
+    }
+
+    // Populate configuration values to elements
+    function applySettings() {
+      document.getElementById('set-appname').value = configSettings.appName || '';
+      document.getElementById('set-welcometext').value = configSettings.welcomeText || '';
+      document.getElementById('set-telegram').value = configSettings.telegramLink || '';
+      document.getElementById('set-contact').value = configSettings.contactLink || '';
+      document.getElementById('set-howtouse').value = configSettings.howToUseLink || '';
+      document.getElementById('set-privacy').value = configSettings.privacyLink || '';
+      document.getElementById('set-password').value = configSettings.adminPassword || '';
+      document.getElementById('set-bannertext').value = configSettings.bannerText || '';
+      document.getElementById('adsgram-id-input').value = configSettings.adsgramBlockId || '';
+      document.getElementById('monetag-id-input').value = configSettings.monetagTagId || '';
+
+      // Toggles synchronization
+      updateToggleUI('adsgram', configSettings.adsgramEnabled);
+      updateToggleUI('monetag', configSettings.monetagEnabled);
+      updateToggleUI('maintenance', configSettings.maintenanceMode);
+      updateToggleUI('banner', configSettings.bannerEnabled);
+
+      // Handle conditional banner textarea
+      const bannerTextContainer = document.getElementById('banner-text-box');
+      if (configSettings.bannerEnabled) {
+        bannerTextContainer.classList.remove('hidden');
+      } else {
+        bannerTextContainer.classList.add('hidden');
+      }
+
+      updateDashboardStats();
+    }
+
+    // Dynamic switches UI updates
+    function updateToggleUI(type, state) {
+      const bg = document.getElementById(`${type}-toggle-bg`);
+      const circle = document.getElementById(`${type}-toggle-circle`);
+      if (!bg || !circle) return;
+
+      if (state) {
+        bg.classList.add('bg-[#0a84ff]');
+        bg.classList.remove('bg-gray-600');
+        circle.style.transform = "translateX(20px)";
+      } else {
+        bg.classList.remove('bg-[#0a84ff]');
+        bg.classList.add('bg-gray-600');
+        circle.style.transform = "translateX(0px)";
+      }
+    }
+
+    // Ad Network Toggles Click
+    window.toggleAdState = function(type) {
+      if (type === 'adsgram') {
+        configSettings.adsgramEnabled = !configSettings.adsgramEnabled;
+      } else {
+        configSettings.monetagEnabled = !configSettings.monetagEnabled;
+      }
+      applySettings();
+    };
+
+    // System Maintenance Toggles Click
+    window.toggleSystemState = function(type) {
+      if (type === 'maintenance') {
+        configSettings.maintenanceMode = !configSettings.maintenanceMode;
+      } else {
+        configSettings.bannerEnabled = !configSettings.bannerEnabled;
+      }
+      applySettings();
+    };
+
+    // Switch Panel Tabs
+    window.switchAdminTab = function(tab) {
+      currentAdminTab = tab;
+      ['dashboard', 'categories', 'prompts', 'ads', 'settings'].forEach(t => {
+        const btn = document.getElementById(`adm-nav-${t}`);
+        if (t === tab) {
+          btn.className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all bg-[#1f293d] text-blue-500";
+        } else {
+          btn.className = "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all text-gray-400 hover:bg-[#12161f]";
+        }
+      });
+
+      ['dashboard', 'categories', 'prompts', 'ads', 'settings'].forEach(t => {
+        const sec = document.getElementById(`panel-${t}`);
+        if (t === tab) sec.classList.remove('hidden');
+        else sec.classList.add('hidden');
+      });
+    };
+
+    // Recalculate Dashboard Stats and Overview
+    function updateDashboardStats() {
+      document.getElementById('stat-categories').innerText = categories.length;
+      document.getElementById('stat-prompts').innerText = prompts.length;
+      document.getElementById('stat-ads').innerText = (configSettings.adsgramBlockId || configSettings.monetagTagId) ? 'Active' : 'Inactive';
+
+      document.getElementById('dash-maintenance-status').innerText = configSettings.maintenanceMode ? 'Enabled' : 'Disabled';
+      document.getElementById('dash-maintenance-status').className = configSettings.maintenanceMode ? 'font-bold text-red-500' : 'font-bold text-gray-500';
+
+      document.getElementById('dash-banner-status').innerText = configSettings.bannerEnabled ? 'Active' : 'Inactive';
+      document.getElementById('dash-banner-status').className = configSettings.bannerEnabled ? 'font-bold text-yellow-500' : 'font-bold text-gray-500';
+    }
+
+    // Render category list rows with counters
+    function renderAdminCategories() {
+      const tbody = document.getElementById('admin-categories-table');
+      let html = '';
+      categories.forEach(c => {
+        // Count total prompts in this category dynamically
+        const count = prompts.filter(p => p.category === c.name).length;
+        html += `
+          <tr class="border-b border-gray-800/50 hover:bg-[#1a202c]/50">
+            <td class="p-4 font-medium flex items-center gap-2">
+              ${c.name} 
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 font-semibold">${count} Prompts</span>
+            </td>
+            <td class="p-4 text-right">
+              <button onclick="deleteCat('${c.id}')" class="px-3 py-1.5 bg-red-600/10 hover:bg-red-600/20 text-red-500 rounded-lg text-xs font-semibold transition-all">Delete</button>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html || `<tr><td colspan="2" class="p-4 text-center text-gray-500">No categories found.</td></tr>`;
+    }
+
+    function populateAdminCategoryDropdown() {
+      const select = document.getElementById('prompt-cat-select');
+      let html = '<option value="">Choose category...</option>';
+      categories.forEach(c => {
+        html += `<option value="${c.name}">${c.name}</option>`;
+      });
+      select.innerHTML = html;
+    }
+
+    // Render Prompts gallery with advanced filter
+    function renderAdminPrompts() {
+      const container = document.getElementById('admin-prompts-list');
+      const queryStr = document.getElementById('prompt-search-input').value.toLowerCase();
+      
+      let filtered = prompts;
+      if (queryStr) {
+        filtered = prompts.filter(p => 
+          p.promptText.toLowerCase().includes(queryStr) || 
+          p.category.toLowerCase().includes(queryStr)
+        );
+      }
+
+      let html = '';
+      filtered.forEach(p => {
+        html += `
+          <div class="bg-[#161b22] border border-gray-800 rounded-2xl overflow-hidden p-3 flex flex-col justify-between glow-border transition-all">
+            <div>
+              <img src="${p.img}" alt="" class="w-full h-32 object-cover rounded-xl mb-3" loading="lazy">
+              <p class="text-xs text-blue-500 font-bold mb-1">${p.category}</p>
+              <p class="text-xs text-gray-300 line-clamp-2 mb-3">${p.promptText}</p>
+            </div>
+            <button onclick="deletePr('${p.id}')" class="w-full py-2 bg-red-600/10 hover:bg-red-600/20 text-red-500 rounded-xl text-xs font-semibold transition-all">Delete Prompt</button>
+          </div>
+        `;
+      });
+      container.innerHTML = html || `<p class="col-span-3 text-center text-gray-500 py-10">No prompts found matching your search.</p>`;
+    }
+
+    // Monitor Search input field real-time
+    document.getElementById('prompt-search-input').addEventListener('input', renderAdminPrompts);
+
+    // Login logic
+    document.getElementById('admin-login-btn').addEventListener('click', () => {
+      const pass = document.getElementById('admin-pass-input').value;
+      if (pass === configSettings.adminPassword) {
+        document.getElementById('admin-auth').classList.add('hidden');
+        document.getElementById('admin-layout').classList.remove('hidden');
+        switchAdminTab('dashboard');
+      } else {
+        alert("Incorrect password! Try again.");
+      }
+    });
+
+    // Add Category
+    document.getElementById('add-cat-btn').addEventListener('click', async () => {
+      const name = document.getElementById('new-cat-input').value;
+      if (!name.trim()) return;
+      try {
+        await addDoc(collection(db, "categories"), { name: name.trim() });
+        document.getElementById('new-cat-input').value = '';
+        alert("Category added successfully!");
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    // Delete Category
+    window.deleteCat = async function(id) {
+      if (confirm("Are you sure you want to delete this category?")) {
+        try {
+          await deleteDoc(doc(db, "categories", id));
+          alert("Category deleted!");
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
+
+    // Add Prompt
+    document.getElementById('add-prompt-btn').addEventListener('click', async () => {
+      const img = document.getElementById('prompt-img-input').value.trim();
+      const cat = document.getElementById('prompt-cat-select').value;
+      const text = document.getElementById('prompt-text-input').value.trim();
+
+      if (!img || !cat || !text) {
+        alert("Please fill up all prompt information!");
+        return;
+      }
+
+      try {
+        await addDoc(collection(db, "prompts"), {
+          img,
+          category: cat,
+          promptText: text,
+          timestamp: new Date().getTime()
+        });
+        document.getElementById('prompt-img-input').value = '';
+        document.getElementById('prompt-text-input').value = '';
+        alert("Prompt posted successfully!");
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    // Delete Prompt
+    window.deletePr = async function(id) {
+      if (confirm("Are you sure you want to delete this prompt?")) {
+        try {
+          await deleteDoc(doc(db, "prompts", id));
+          alert("Prompt deleted!");
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
+
+    // Save Ads Config
+    document.getElementById('save-ads-btn').addEventListener('click', async () => {
+      try {
+        await setDoc(doc(db, "config", "settings"), {
+          ...configSettings,
+          adsgramBlockId: document.getElementById('adsgram-id-input').value.trim(),
+          monetagTagId: document.getElementById('monetag-id-input').value.trim()
+        });
+        alert("Ads configurations updated!");
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    // Save Global Settings
+    document.getElementById('save-settings-btn').addEventListener('click', async () => {
+      const name = document.getElementById('set-appname').value.trim();
+      const wel = document.getElementById('set-welcometext').value.trim();
+      const tel = document.getElementById('set-telegram').value.trim();
+      const con = document.getElementById('set-contact').value.trim();
+      const guide = document.getElementById('set-howtouse').value.trim();
+      const privacy = document.getElementById('set-privacy').value.trim();
+      const pass = document.getElementById('set-password').value.trim();
+      const bText = document.getElementById('set-bannertext').value.trim();
+
+      try {
+        await setDoc(doc(db, "config", "settings"), {
+          ...configSettings,
+          appName: name,
+          welcomeText: wel,
+          telegramLink: tel,
+          contactLink: con,
+          howToUseLink: guide,
+          privacyLink: privacy,
+          adminPassword: pass,
+          bannerText: bText
+        });
+        alert("All settings updated!");
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    // Logout
+    window.logoutAdmin = function() {
+      document.getElementById('admin-pass-input').value = '';
+      document.getElementById('admin-layout').classList.add('hidden');
+      document.getElementById('admin-auth').classList.remove('hidden');
+    };
+
+    // Initialize Sync
+    initDataSync();
+
+    // Export variables to window
+    window.switchAdminTab = switchAdminTab;
+    window.logoutAdmin = logoutAdmin;
+    window.toggleAdState = toggleAdState;
+    window.toggleSystemState = toggleSystemState;
+
+  </script>
+</body>
+</html>
