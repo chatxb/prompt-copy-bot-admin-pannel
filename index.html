@@ -111,121 +111,120 @@
 </head>
 <body class="bg-brand-50 text-slate-800 antialiased min-h-screen flex" id="app-body">
 
-  <!-- MAIN APP SCREEN (Opens directly without Password login) -->
-  <div id="main-screen" class="flex-1 flex flex-col h-screen fade-in w-full transition-all">
-      
-      <!-- TOP NAVIGATION -->
-      <header class="bg-white/80 dark:bg-[#131b2e]/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-30 shadow-sm h-16 flex items-center justify-between px-4 md:px-6">
-          <div class="flex items-center gap-4">
-              <!-- Mobile sidebar toggle button -->
-              <button onclick="document.getElementById('mobile-sidebar').classList.toggle('-translate-x-full')" class="md:hidden text-slate-500 hover:text-slate-800 focus:outline-none">
-                  <i class="fa-solid fa-bars text-xl"></i>
-              </button>
-              <div class="hidden md:flex w-8 h-8 rounded-lg bg-brand-600 text-white items-center justify-center font-bold text-sm shadow shadow-brand-500/50">
-                  <i class="fa-solid fa-layer-group"></i>
-              </div>
-              <h1 class="font-bold text-xl text-slate-800 tracking-tight">Prompt House <span class="text-slate-400 font-normal">Console</span></h1>
-          </div>
-          <div class="flex items-center gap-4 md:gap-6">
-              <span class="hidden md:flex px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Connected
-              </span>
-              <button onclick="toggleDarkMode()" class="text-slate-500 hover:text-brand-600 transition text-lg flex items-center justify-center">
-                  <i class="fa-solid fa-moon" id="dark-mode-icon"></i>
-              </button>
-          </div>
-      </header>
+    <!-- MAIN APP SCREEN -->
+    <div id="main-screen" class="flex-1 flex flex-col h-screen fade-in w-full transition-all">
+        
+        <!-- TOP NAVIGATION -->
+        <header class="bg-white/80 dark:bg-[#131b2e]/80 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-30 shadow-sm h-16 flex items-center justify-between px-4 md:px-6">
+            <div class="flex items-center gap-4">
+                <!-- Mobile sidebar toggle button -->
+                <button onclick="document.getElementById('mobile-sidebar').classList.toggle('-translate-x-full')" class="md:hidden text-slate-500 hover:text-slate-800 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="hidden md:flex w-8 h-8 rounded-lg bg-brand-600 text-white items-center justify-center font-bold text-sm shadow shadow-brand-500/50">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h1 class="font-bold text-xl text-slate-800 tracking-tight">Prompt House <span class="text-slate-400 font-normal">Console</span></h1>
+            </div>
+            <div class="flex items-center gap-4 md:gap-6">
+                <span class="hidden md:flex px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Connected
+                </span>
+                <button onclick="toggleDarkMode()" class="text-slate-500 hover:text-brand-600 transition text-lg flex items-center justify-center">
+                    <i class="fa-solid fa-moon" id="dark-mode-icon"></i>
+                </button>
+            </div>
+        </header>
 
-      <!-- LAYOUT CONTENT -->
-      <div class="flex-1 overflow-hidden flex bg-slate-50 relative">
-          <!-- SIDEBAR (Drawer view on mobile) -->
-          <aside id="mobile-sidebar" class="absolute md:relative w-64 bg-white/80 dark:bg-[#131b2e]/80 backdrop-blur-md border-r border-slate-200/50 dark:border-slate-800/50 flex flex-col h-full z-40 transition-transform duration-300 -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
-              <div class="flex md:hidden items-center justify-between p-4 border-b border-slate-100">
-                  <h2 class="font-bold text-sm text-slate-500">Navigation</h2>
-                  <button onclick="document.getElementById('mobile-sidebar').classList.toggle('-translate-x-full')" class="text-slate-400 hover:text-slate-800">
-                      <i class="fa-solid fa-xmark text-lg"></i>
-                  </button>
-              </div>
-              <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-                  <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 transition-all active-nav bg-indigo-50 text-brand-700 dark:bg-indigo-500/20 dark:text-indigo-300">
-                      <i class="fa-solid fa-chart-line w-5 text-center text-indigo-500"></i> Dashboard
-                  </button>
-                  <button onclick="switchTab('categories')" id="nav-categories" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                      <i class="fa-solid fa-shapes w-5 text-center text-pink-500"></i> Categories
-                  </button>
-                  <button onclick="switchTab('prompts')" id="nav-prompts" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                      <i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-purple-500"></i> Prompts
-                  </button>
-                  <!-- Bot users tab -->
-                  <button onclick="switchTab('users')" id="nav-users" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                      <i class="fa-solid fa-users w-5 text-center text-teal-500"></i> Bot Users
-                  </button>
-                  <div class="pt-6 pb-2">
-                      <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">System Configuration</p>
-                  </div>
-                  <button onclick="switchTab('ads')" id="nav-ads" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                      <i class="fa-solid fa-circle-dollar-to-slot w-5 text-center text-emerald-500"></i> Ads Manager
-                  </button>
-                  <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                      <i class="fa-solid fa-sliders w-5 text-center text-yellow-500"></i> Global Settings
-                  </button>
-              </nav>
-          </aside>
+        <!-- LAYOUT CONTENT -->
+        <div class="flex-1 overflow-hidden flex bg-slate-50 relative">
+            <!-- SIDEBAR -->
+            <aside id="mobile-sidebar" class="absolute md:relative w-64 bg-white/80 dark:bg-[#131b2e]/80 backdrop-blur-md border-r border-slate-200/50 dark:border-slate-800/50 flex flex-col h-full z-40 transition-transform duration-300 -translate-x-full md:translate-x-0 shadow-2xl md:shadow-none">
+                <div class="flex md:hidden items-center justify-between p-4 border-b border-slate-100">
+                    <h2 class="font-bold text-sm text-slate-500">Navigation</h2>
+                    <button onclick="document.getElementById('mobile-sidebar').classList.toggle('-translate-x-full')" class="text-slate-400 hover:text-slate-800">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 transition-all active-nav bg-indigo-50 text-brand-700 dark:bg-indigo-500/20 dark:text-indigo-300">
+                        <i class="fa-solid fa-chart-line w-5 text-center text-indigo-500"></i> Dashboard
+                    </button>
+                    <button onclick="switchTab('categories')" id="nav-categories" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                        <i class="fa-solid fa-shapes w-5 text-center text-pink-500"></i> Categories
+                    </button>
+                    <button onclick="switchTab('prompts')" id="nav-prompts" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                        <i class="fa-solid fa-wand-magic-sparkles w-5 text-center text-purple-500"></i> Prompts
+                    </button>
+                    <button onclick="switchTab('users')" id="nav-users" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                        <i class="fa-solid fa-users w-5 text-center text-teal-500"></i> Bot Users
+                    </button>
+                    <div class="pt-6 pb-2">
+                        <p class="px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">System Configuration</p>
+                    </div>
+                    <button onclick="switchTab('ads')" id="nav-ads" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                        <i class="fa-solid fa-circle-dollar-to-slot w-5 text-center text-emerald-500"></i> Ads Manager
+                    </button>
+                    <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
+                        <i class="fa-solid fa-circle-nodes w-5 text-center text-yellow-500"></i> Global Settings
+                    </button>
+                </nav>
+            </aside>
 
-          <!-- MAIN CONTENT AREA -->
-          <main class="flex-1 h-full overflow-y-auto w-full">
-              <div class="p-8 max-w-5xl mx-auto w-full">
+            <!-- MAIN CONTENT AREA -->
+            <main class="flex-1 h-full overflow-y-auto w-full">
+                <div class="p-8 max-w-5xl mx-auto w-full">
 
-                  <!-- NOTIFICATIONS TOAST SYSTEM -->
-                  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
+                    <!-- NOTIFICATIONS TOAST SYSTEM -->
+                    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
 
-                  <!-- TAB: DASHBOARD -->
-                  <div id="tab-dashboard" class="tab-content fade-in block space-y-6">
-                      <div>
-                          <h3 class="text-xl font-bold text-slate-800">System Analytics</h3>
-                          <p class="text-sm text-slate-500">Live data tracking from Firebase.</p>
-                      </div>
+                    <!-- TAB: DASHBOARD -->
+                    <div id="tab-dashboard" class="tab-content fade-in block space-y-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">System Analytics</h3>
+                            <p class="text-sm text-slate-500">Live data tracking from Firebase.</p>
+                        </div>
 
-                      <!-- STATS CARDS -->
-                      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                          <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 border border-white/10 shadow-xl shadow-indigo-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl relative overflow-hidden">
-                              <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                              <div class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 relative z-10">
-                                  <i class="fa-solid fa-layer-group"></i>
-                              </div>
-                              <div class="relative z-10">
-                                  <p class="text-xs sm:text-sm font-medium text-indigo-100 uppercase tracking-wider">Total Prompts</p>
-                                  <h3 class="text-3xl sm:text-4xl font-extrabold" id="stat-prompts">0</h3>
-                              </div>
-                          </div>
-                          <div class="bg-gradient-to-br from-rose-500 to-orange-500 rounded-3xl p-6 border border-white/10 shadow-xl shadow-rose-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl relative overflow-hidden">
-                              <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                              <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 relative z-10">
-                                  <i class="fa-solid fa-tags"></i>
-                              </div>
-                              <div class="relative z-10">
-                                  <p class="text-xs sm:text-sm font-medium text-rose-100 uppercase tracking-wider">Total Categories</p>
-                                  <h3 class="text-3xl sm:text-4xl font-extrabold" id="stat-categories">0</h3>
-                              </div>
-                          </div>
-                          <div class="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-3xl p-6 border border-white/10 shadow-xl shadow-teal-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl relative overflow-hidden">
-                              <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                              <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 relative z-10">
-                                  <i class="fa-solid fa-users"></i>
-                              </div>
-                              <div class="relative z-10">
-                                  <p class="text-xs sm:text-sm font-medium text-teal-100 uppercase tracking-wider">Total Bot Users</p>
-                                  <h3 class="text-3xl sm:text-4xl font-extrabold" id="stat-users">0</h3>
-                              </div>
-                          </div>
-                          <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 border border-white/10 shadow-xl shadow-emerald-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl sm:col-span-2 md:col-span-1 relative overflow-hidden">
-                              <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-                              <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 shrink-0 relative z-10">
-                                  <i class="fa-solid fa-mobile-screen"></i>
-                              </div>
-                              <div class="flex-1 overflow-hidden relative z-10">
-                                  <p class="text-xs sm:text-sm font-medium text-emerald-100 uppercase tracking-wider">Active Ad Status</p>
-                                  <h3 class="text-2xl sm:text-3xl font-extrabold uppercase truncate" id="stat-active-ad">Active</h3>
+                        <!-- STATS CARDS -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-6 border border-white/10 shadow-xl shadow-indigo-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl relative overflow-hidden">
+                                <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                                <div class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 relative z-10">
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </div>
+                                <div class="relative z-10">
+                                    <p class="text-xs sm:text-sm font-medium text-indigo-100 uppercase tracking-wider">Total Prompts</p>
+                                    <h3 class="text-3xl sm:text-4xl font-extrabold" id="stat-prompts">0</h3>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-br from-rose-500 to-orange-500 rounded-3xl p-6 border border-white/10 shadow-xl shadow-rose-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl relative overflow-hidden">
+                                <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                                <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 relative z-10">
+                                    <i class="fa-solid fa-tags"></i>
+                                </div>
+                                <div class="relative z-10">
+                                    <p class="text-xs sm:text-sm font-medium text-rose-100 uppercase tracking-wider">Total Categories</p>
+                                    <h3 class="text-3xl sm:text-4xl font-extrabold" id="stat-categories">0</h3>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-br from-teal-500 to-emerald-600 rounded-3xl p-6 border border-white/10 shadow-xl shadow-teal-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl relative overflow-hidden">
+                                <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                                <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 relative z-10">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                                <div class="relative z-10">
+                                    <p class="text-xs sm:text-sm font-medium text-teal-100 uppercase tracking-wider">Total Bot Users</p>
+                                    <h3 class="text-3xl sm:text-4xl font-extrabold" id="stat-users">0</h3>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 border border-white/10 shadow-xl shadow-emerald-500/20 flex items-center gap-5 text-white transform transition-all hover:-translate-y-1 hover:shadow-2xl sm:col-span-2 md:col-span-1 relative overflow-hidden">
+                                <div class="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+                                <div class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/20 shrink-0 relative z-10">
+                                    <i class="fa-solid fa-mobile-screen"></i>
+                                </div>
+                                <div class="flex-1 overflow-hidden relative z-10">
+                                    <p class="text-xs sm:text-sm font-medium text-emerald-100 uppercase tracking-wider">Active Ad Status</p>
+                                    <h3 class="text-2xl sm:text-3xl font-extrabold uppercase truncate" id="stat-active-ad">Active</h3>
                                 </div>
                             </div>
                         </div>
@@ -356,14 +355,14 @@
                     <div id="tab-ads" class="tab-content fade-in hidden space-y-6 w-full">
                         <div>
                             <h2 class="text-2xl font-bold text-slate-800">Ads Management</h2>
-                            <p class="text-sm text-slate-500">Configure Adsgram and Monetag tags and state.</p>
+                            <p class="text-sm text-slate-500">Configure Adsgram, Monetag, and Adsterra dynamic ad settings.</p>
                         </div>
                         <form id="ads-form" onsubmit="saveAdsSettings(event)" class="space-y-6 w-full">
                             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                                 <h3 class="text-sm font-bold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                                     <i class="fa-solid fa-bullhorn text-brand-500"></i> Advertisement Configuration
                                 </h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <!-- Adsgram settings -->
                                     <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
                                         <div>
@@ -388,6 +387,20 @@
                                             <span class="text-xs font-bold text-slate-600">Enable Monetag Ads</span>
                                             <label class="relative inline-flex items-center cursor-pointer">
                                                 <input type="checkbox" id="setting-monetagEnabled" class="sr-only peer">
+                                                <div class="w-11 h-6 bg-slate-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:bg-slate-700 peer-checked:bg-indigo-600"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- Adsterra settings (PRO: Added for your native ads) -->
+                                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
+                                        <div>
+                                            <label class="text-xs font-bold text-slate-600 block mb-1">Adsterra Placement Key</label>
+                                            <input type="text" id="setting-adsterraKey" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:border-brand-500 outline-none" placeholder="Placement Key...">
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-xs font-bold text-slate-600">Enable Adsterra Ads</span>
+                                            <label class="relative inline-flex items-center cursor-pointer">
+                                                <input type="checkbox" id="setting-adsterraEnabled" class="sr-only peer">
                                                 <div class="w-11 h-6 bg-slate-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:bg-slate-700 peer-checked:bg-indigo-600"></div>
                                             </label>
                                         </div>
@@ -627,6 +640,8 @@
           monetagTagId: '',
           adsgramEnabled: true,
           monetagEnabled: true,
+          adsterraKey: '',
+          adsterraEnabled: true,
           maintenanceMode: false,
           bannerEnabled: false,
           bannerText: ''
@@ -725,12 +740,15 @@
             document.getElementById('setting-privacyLink').value = configSettings.privacyLink || '';
             document.getElementById('setting-bannerText').value = configSettings.bannerText || '';
             
+            // Sync Ads settings
             document.getElementById('setting-adsgramBlockId').value = configSettings.adsgramBlockId || '';
             document.getElementById('setting-monetagTagId').value = configSettings.monetagTagId || '';
+            document.getElementById('setting-adsterraKey').value = configSettings.adsterraKey || '';
 
             // Toggles
             document.getElementById('setting-adsgramEnabled').checked = !!configSettings.adsgramEnabled;
             document.getElementById('setting-monetagEnabled').checked = !!configSettings.monetagEnabled;
+            document.getElementById('setting-adsterraEnabled').checked = !!configSettings.adsterraEnabled;
             document.getElementById('setting-maintenanceMode').checked = !!configSettings.maintenanceMode;
             document.getElementById('setting-bannerEnabled').checked = !!configSettings.bannerEnabled;
 
@@ -1135,7 +1153,7 @@
         function updateDashboardStats() {
             document.getElementById('stat-categories').textContent = categories.length;
             document.getElementById('stat-prompts').textContent = promptsList.length;
-            document.getElementById('stat-users').textContent = usersList.length; // Live Users stat [৩]
+            document.getElementById('stat-users').textContent = usersList.length; // Live Users stat
 
             document.getElementById('dash-maintenance-status').innerText = configSettings.maintenanceMode ? 'Enabled' : 'Disabled';
             document.getElementById('dash-maintenance-status').className = configSettings.maintenanceMode ? 'font-bold text-red-500' : 'font-bold text-gray-500';
@@ -1166,7 +1184,10 @@
                     adsgramBlockId: document.getElementById('setting-adsgramBlockId').value.trim(),
                     adsgramEnabled: document.getElementById('setting-adsgramEnabled').checked,
                     monetagTagId: document.getElementById('setting-monetagTagId').value.trim(),
-                    monetagEnabled: document.getElementById('setting-monetagEnabled').checked
+                    monetagEnabled: document.getElementById('setting-monetagEnabled').checked,
+                    // PRO: Adsterra integrated to Firestore save [৩]
+                    adsterraKey: document.getElementById('setting-adsterraKey').value.trim(),
+                    adsterraEnabled: document.getElementById('setting-adsterraEnabled').checked
                 };
 
                 await db.collection("config").doc("settings").set(data, { merge: true });
