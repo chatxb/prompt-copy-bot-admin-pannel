@@ -425,7 +425,7 @@
                             
                             <!-- GENERAL CONFIG -->
                             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mt-6">
-                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-tight mb-4 flex items-center gap-2">
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                                     <i class="fa-solid fa-sliders text-brand-500"></i> App Information
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -442,7 +442,7 @@
 
                             <!-- MENU LINKS CONFIG -->
                             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mt-6">
-                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-tight mb-4 flex items-center gap-2">
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                                     <i class="fa-solid fa-link text-brand-500"></i> App Menu Links
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -471,7 +471,7 @@
 
                             <!-- PRO MAINTENANCE CONFIG -->
                             <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mt-6">
-                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-tight mb-4 flex items-center gap-2">
+                                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                                     <i class="fa-solid fa-gears text-brand-500"></i> App Maintenance & Notifications Switches
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
@@ -610,7 +610,7 @@
        ADMIN SUITE WEB ENGINE
     ========================================== -->
     <script>
-        // Your public Firebase API Config (Embedded safely as requested)
+        // Your public Firebase API Config (Embedded safely)
         const firebaseConfig = {
           apiKey: "AIzaSyBP9d5ekOd0zvO-D7Fq8aXmNoS2aqryvVA",
           authDomain: "tg-bot-prompt-copy.firebaseapp.com",
@@ -641,7 +641,7 @@
           monetagTagId: '',
           adsgramEnabled: true,
           monetagEnabled: true,
-          adsterraKey: '',
+          adsterraCode: '',
           adsterraEnabled: true,
           maintenanceMode: false,
           bannerEnabled: false,
@@ -986,7 +986,7 @@
 
             select.innerHTML = '<option value="" disabled selected>Select a Category</option>';
             categories.forEach(cat => {
-                select.innerHTML += `<option value="${cat.name}">${cat.name}</option>';
+                select.innerHTML += `<option value="${cat.name}">${cat.name}</option>`;
             });
         }
 
